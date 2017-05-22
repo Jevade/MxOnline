@@ -35,15 +35,16 @@ class UserProfile(AbstractUser):
 class EmailVertifyRecoder(models.Model):
     code = models.CharField(max_length=20, verbose_name=u"验证码")
     email = models.EmailField(max_length=50, verbose_name=u"邮箱")
-    send_type = models.CharField(choices=(('register', "注册"), ("forget", u"忘记密码")), max_length=10, verbose_name='验证码类型')
+    send_type = models.CharField(choices=(('register', u"注册"), ("forget", u"忘记密码")), max_length=10,
+                                 verbose_name='验证码类型')
     send_time = models.DateTimeField(default=datetime.now, verbose_name='发送时间')
-
-    def __unicode__(self):
-        return self.email
 
     class Meta:
         verbose_name = u"邮箱验证码"
         verbose_name_plural = verbose_name
+
+    def __unicode__(self):
+        return self.email
 
 
 class Banner(models.Model):
@@ -56,3 +57,6 @@ class Banner(models.Model):
     class Meta:
         verbose_name = u"轮播图"
         verbose_name_plural = verbose_name
+
+    def __unicode__(self):
+        return self.email

@@ -22,25 +22,33 @@ def random_str(random_length=8):
 
 
 def send_register_email(email, send_type="register"):
-    email_record = EmailVertifyRecoder()
     code = random_str(16)
-    email_record.email = email
-    email_record.code = code
-    email_record.send_type = send_type
-    email_record.send_time = datetime.now
+    # user_profile = UserProfile(is_active=False, username=user_name, email=user_name,
+    #                            password=make_password(pass_word))
+    # user_profile.save()
+    email_record = EmailVertifyRecoder(email=email, code=code, send_type=send_type)
+    email_record.save()
     try:
         email_record.save()
     except:
         print('save error')
-
     email_title = ""
     email_body = ""
 
     if send_type == "register":
         email_title = "注册激活链接"
-        email_body = "请点击下面的链接：http://127.0.0.1:8000/active/{0}".format(str)
-        send_status=send_mail(email_title, email_body, EMAIL_FROM, [email])
+        email_body = "请点击下面的链接：http://127.0.0.1:8000/active/{0}".format(code)
+        send_status = send_mail(email_title, email_body, EMAIL_FROM, [email])
         if send_status:
-            pass
+            return True
         else:
             return False
+    elif send_type == "forget":
+        email_title = "重置密码链接"
+        email_body = "请点击下面的链接：http://127.0.0.1:8000/reset/{0}".format(code)
+        send_status = send_mail(email_title, email_body, EMAIL_FROM, [email])
+        if send_status:
+            return True
+        else:
+            return False
+
